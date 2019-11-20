@@ -1,22 +1,84 @@
-.App {
+/*.App {*/
+/*  text-align: center;*/
+/*}*/
+
+/*.App-logo {*/
+/*  height: 40vmin;*/
+/*}*/
+
+/*.App-header {*/
+/*  background-color: #282c34;*/
+/*  min-height: 100vh;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  font-size: calc(10px + 2vmin);*/
+/*  color: white;*/
+/*}*/
+
+/*.App-link {*/
+/*  color: #09d3ac;*/
+/*}*/
+
+.welcome {
+  background: url("Lac de Dix_thumbnail_1384x894.jpg") 100%;
+  background-size: cover;
+  width: 100vw;
+  height: 40rem;
+}
+
+.welcome-page-container {
+  width: 100vw;
+  height: 5rem;
+  background: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-page {
+  width: auto;
+  height: 2rem;
+  padding: 0 3rem;
+  font-size: 2rem;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* second part: list trails */
+.trails {
+  width: 86vw;
+  height: 40rem;
+  margin: 3rem 7vw 3rem 7vw;
+  /*background-color: #08AEEA;*/
+  /*background-image: linear-gradient(0deg, #08AEEA 0%, #2AF598 100%);*/
+  display: grid;
+}
+
+.trails-map {
+  width: 63vw;
+}
+
+.footer {
+  background: black;
+  width: 100vw;
+  height: 7rem;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.footer-content {
+  margin: 0;
+  padding: 1rem 1rem;
+  size: 3rem;
+  color: white;
 }
