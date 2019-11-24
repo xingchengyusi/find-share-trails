@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 
 const Router = () => (
-    <HashRouter>
+  <HashRouter>
         <Switch>
             <Route exact path='/' component={App} />
             <Route exact path='/about' component={About} />
