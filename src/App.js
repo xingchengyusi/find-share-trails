@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Welcome from "./Welcome";
+import Footer from './Footer';
 
 class Trails_list extends React.Component {
     render() {
@@ -180,16 +181,6 @@ class Trails extends  React.Component {
             <div className="trails">
                 <Trails_list trails={this.trails} />
                 <Trails_map trails={this.trails} id='trails-map' options={{center: { lat: 45.5051, lng: -122.6750 }, zoom: 13, mapTypeId: 'terrain'}} />
-            </div>
-        );
-    }
-}
-
-class Footer extends React.Component {
-    render() {
-        return (
-            <div className="footer">
-                <p className="footer-content">Copyright @2019</p>
             </div>
         );
     }

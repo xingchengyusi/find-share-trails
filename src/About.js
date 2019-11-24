@@ -1,6 +1,7 @@
 import React from 'react';
 import './About.css';
 import Welcome from "./Welcome";
+import Footer from './Footer';
 
 class Introduce extends React.Component {
     render() {
@@ -30,6 +31,7 @@ function About() {
             <Welcome/>
             <Introduce />
             <Member />
+            <Footer />
         </div>
     );
 }

@@ -52,21 +52,3 @@ a {
 .trails-list-item {
 
 }
-
-.footer {
-  background: black;
-  width: 100vw;
-  height: 7rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-content {
-  margin: 0;
-  padding: 1rem 1rem;
-  size: 3rem;
-  color: white;
-}
