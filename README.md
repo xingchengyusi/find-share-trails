@@ -1,6 +1,6 @@
 # Find and Share Trails
 
-This is a web application that use React builded by Dajun Gu and Ching-Wei Lin.
+This is a web application that use React builded by Dajun Gu and Ching-Wei Lin in CS465 Full-Stack Web Application course.
 
 ## Function
 
