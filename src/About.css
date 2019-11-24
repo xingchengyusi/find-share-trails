@@ -1,0 +1,14 @@
+.intro {
+    margin: 0;
+    text-align: center;
+    width: 100vw;
+    height: auto;
+}
+
+.intro-title {
+    font-size: 2rem;
+}
+
+.intro-normal {
+    font-size: 1rem;
+}

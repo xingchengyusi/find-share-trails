@@ -1,45 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import GoogleMap from 'google-maps-react';
-
-// first welcome part
-class Welcome_page extends React.Component {
-  render() {
-    return (
-        <div className="welcome-page">
-            <a href={this.props.link}>{this.props.name}</a>
-        </div>
-    );
-  }
-}
-
-class Welcome extends React.Component {
-  render() {
-      return (
-          <div className="welcome">
-              <div className="welcome-page-container">
-                  <i className="fas fa-hiking welcome-page"></i>
-                  <Welcome_page link={"./index.html"} name={"Find and Share Trails"} />
-                  <Welcome_page link={"./login.html"} name={"Log In"} />
-                  <Welcome_page link={"./About.html"} name={"About"} />
-              </div>
-          </div>
-      );
-  }
-}
+import Welcome from "./Welcome";
 
 class Trails_list extends React.Component {
-    // eslint-disable-next-line no-useless-constructor
-    constructor(pros){
-        super(pros);
-    }
-
     render() {
         this.trailsList = this.props.trails.map((trail) =>
             <div className='trails-list-item'>
                 <div className='trails-list-item-title'>{trail.name}</div>
-                <div className='trails-list-item-distance'>{trail.distance}</div>
+                <div className='trails-list-item-distance'>{trail.length} miles</div>
             </div>
         );
 
@@ -69,7 +37,6 @@ class Trails_map extends React.Component {
             });
             markers.push(mark);
         }
-        // this.props.onMapLoad(map);
     }
 
     componentDidMount() {
@@ -90,7 +57,7 @@ class Trails_map extends React.Component {
 
     render() {
         return (
-            <div id={this.props.id} />
+            <div className='trails-map' id={this.props.id} />
         );
     }
 }
@@ -212,7 +179,7 @@ class Trails extends  React.Component {
         return (
             <div className="trails">
                 <Trails_list trails={this.trails} />
-                <Trails_map trails={this.trails} className='trails-map' id='trails-map' options={{center: { lat: 45.5051, lng: -122.6750 }, zoom: 13, mapTypeId: 'terrain'}} />
+                <Trails_map trails={this.trails} id='trails-map' options={{center: { lat: 45.5051, lng: -122.6750 }, zoom: 13, mapTypeId: 'terrain'}} />
             </div>
         );
     }
