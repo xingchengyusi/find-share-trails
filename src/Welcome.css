@@ -1,0 +1,29 @@
+.welcome {
+    background: url("Lac de Dix_thumbnail_1384x894.jpg") 100%;
+    background-size: cover;
+    width: 100vw;
+    height: 40rem;
+}
+
+.welcome-page-container {
+    width: 100vw;
+    height: 5rem;
+    background: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-page {
+    width: auto;
+    height: 2rem;
+    padding: 0 3rem;
+    font-size: 2rem;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}

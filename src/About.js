@@ -3,6 +3,14 @@ import './About.css';
 import Welcome from "./Welcome";
 import Footer from './Footer';
 
+class Title extends React.Component {
+  render() {
+    return (
+      <div className='title'>About</div>
+    )
+  }
+}
+
 class Introduce extends React.Component {
   render() {
     return (
@@ -28,7 +36,7 @@ class Member extends React.Component {
 function About() {
   return (
     <div>
-      <Welcome/>
+      <Welcome title={(<Title />)} />
       <Introduce />
       <Member />
       <Footer />
