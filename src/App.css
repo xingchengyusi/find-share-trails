@@ -8,7 +8,7 @@
   /*margin: 3rem 7vw 3rem 7vw;*/
   padding: 3rem 5vw;
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 4fr;
   grid-template-rows: 2fr 1.5fr 15fr 1fr;
   grid-gap: 0.5rem;
   grid-template-areas: 'title title' 'filter filter' 'li map' 'pagenum map';
@@ -37,7 +37,7 @@
   grid-gap: 0.4rem;
 }
 
-.trails-list-item {
+.list-item {
   margin: 0.3rem;
   background: white;
   text-align: center;
@@ -45,33 +45,54 @@
   border-color: black;
   padding: 0.2rem;
   box-shadow: 0 0 0.3rem 0.3rem black;
-  background: rgba(255, 255, 255, 0.5);
+  /*background: rgba(255, 255, 255, 0.5);*/
   transition: all 0.5s;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: 'title title' 'length ascent' 'state state';
+  grid-template-areas: 'title title' 'length ascent' 'state fav';
 }
 
-.trails-list-item:hover {
+.list-item:hover {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 0 2vmin 2vmin gray;
 }
 
-.trails-list-item-title {
+.list-item-title {
   grid-area: title;
 }
 
-.trails-list-item-state {
+.list-item-state {
   grid-area: state;
 }
 
-.trails-page {
+.list-item-add {
+  grid-area: fav;
+}
+
+.page {
   grid-area: pagenum;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.trails-page-num {
+.page-num {
+  font-weight: 600;
+  font-size: 1.3rem;
 }
 
-.trails-page-change {
+.page-change {
+  height: 100%;
+  width: 30%;
+  border: none;
+  background-color: greenyellow;
+  color: black;
+}
+
+.page-change:hover {
+  background-color: blue;
+  color: white;
 }

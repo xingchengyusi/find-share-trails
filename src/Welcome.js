@@ -14,7 +14,6 @@ class Welcome_page extends React.Component {
 
 class Welcome_title extends React.Component {
   render() {
-    // const Welcome_tit = this.props.title;
     return (
       <div>{this.props.title}</div>
     );
@@ -23,7 +22,6 @@ class Welcome_title extends React.Component {
 
 class Welcome extends React.Component {
   render() {
-    // alert(this.props.title);
     return (
       <div className="welcome">
         <div className="welcome-page-container">
