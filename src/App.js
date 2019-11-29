@@ -53,34 +53,52 @@ class Trails_map extends React.Component {
     super(props);
     this.state = {
       map: Object,
-      marker: [],
+      markers: [],
+      num: 1,
     }
 
+    // when the component mount, load map and markers in the first page
     this.onScriptLoad = this.onScriptLoad.bind(this);
-    // this.trailsChange = this.trailsChange.bind(this);
+    // clear all markers
+    this.markerClear = this.markerClear.bind(this);
+    // load new markers in the current page
+    this.markerLoad = this.markerLoad.bind(this);
   }
 
   onScriptLoad() {
     this.setState({
       map: new window.google.maps.Map(document.getElementById(this.props.id), this.props.options),
     });
+    this.markerLoad();
+  }
+
+  markerLoad() {
     const markers = [];
     for (let i = 0; i < this.props.trails.length; i++) {
-      let trail = this.props.trails[i];
-
+      let t = this.props.trails[i];
       let mark = new window.google.maps.Marker({
         position: {
-          lat: trail.latitude,
-          lng: trail.longitude
+          lat: t.latitude,
+          lng: t.longitude,
         },
         map: this.state.map,
-        title: trail.name,
-      });
+        title: t.name,
+        label: String(i+1),
+      })
       markers.push(mark);
     }
+
     this.setState({
       markers: markers,
     })
+  }
+
+  markerClear() {
+    let m2 = this.state.markers;
+    for (let i = 0; i < m2.length; i++) {
+      m2[i].setMap(null);
+    }
+    this.setState({markers: []});
   }
 
   componentDidMount() {
@@ -99,7 +117,14 @@ class Trails_map extends React.Component {
     }
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
+    if (this.props.num != this.state.num) {
+      this.markerClear();
+      this.markerLoad();
+      this.setState({
+        num: this.props.num,
+      })
+    }
   }
 
   render() {
@@ -408,7 +433,7 @@ class Trails extends  React.Component {
     return (
       <div className="trails">
         <div className='trails-title'>Hot Trails</div>
-        <Trails_map trails={trails} id='trails-map' options={{center: { lat: trails[0].latitude, lng: trails[0].longitude }, zoom: 14, mapTypeId: 'terrain'}} />
+        <Trails_map num={num} trails={trails} id='trails-map' options={{center: { lat: trails[0].latitude, lng: trails[0].longitude }, zoom: 12, mapTypeId: 'terrain'}} />
         <Trails_list trails={trails} />
         <Trails_page num={num} previousPage={this.previousPage} nextPage={this.nextPage} />
       </div>
