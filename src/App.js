@@ -3,28 +3,10 @@ import './App.css';
 import Welcome from "./Welcome";
 import Footer from './Footer';
 
-class Trails_find extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: '',
-    };
-
-    // this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  // when submit, call the function in Trails class.
-  handleSubmit(e) {
-    this.props.getTrails(e.target.value);
-  }
-
+class Trails_title extends React.Component {
   render() {
     return (
-      <form className='trails-find' id='trails-find' onSubmit={this.handleSubmit}>
-        <input type="text" value={this.state.value} />
-        <input type='submit' value='Find'/>
-      </form>
+      <div className='title'>Find Your Trails</div>
     );
   }
 }
@@ -104,7 +86,7 @@ class Trails_map extends React.Component {
   componentDidMount() {
     if (!window.google){
       let googlescript = document.createElement('script');
-      googlescript.src = 'https://maps.google.com/maps/api/js?key=AIzaSyBaVO8RPMYTBf5f-Lx9_fiKj_woRmpjrT4';
+      googlescript.src = `https://maps.google.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API}`;
       googlescript.type = 'text/javascript';
       let x = document.getElementsByTagName('script')[0];
       x.parentNode.insertBefore(googlescript, x);
@@ -118,7 +100,7 @@ class Trails_map extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.num != this.state.num) {
+    if (this.props.num !== this.state.num) {
       this.markerClear();
       this.markerLoad();
       this.setState({
@@ -129,7 +111,7 @@ class Trails_map extends React.Component {
 
   render() {
     return (
-      <div className='trails-map' id={this.props.id} />
+      <div className='map' id={this.props.id} />
     );
   }
 }
@@ -161,22 +143,61 @@ class Trails_page extends React.Component {
   }
 }
 
+class Trails_search extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    console.log(this.state.value);
+    this.props.searchTrails(this.state.value);
+  }
+
+  render() {
+    return (
+      <form className='trails-find' id='trails-find' onSubmit={this.handleSubmit}>
+        <input type="text" placeholder='trail location' value={this.state.value} onChange={this.handleChange} />
+        <input type='submit' value='Find'/>
+      </form>
+    );
+  }
+}
+
 class Trails extends  React.Component {
   constructor(props) {
     super(props);
     this.state = {
       num: 1,
-      trails: {},
+      trails: [],
       filter: {
         weather: 1,
         condition: 1,
-      }
+      },
+      default_para: {
+        lat: 39.9787,
+        lon: -105.2755,
+        maxDistance: 30,
+        maxResults: 20,
+        sort: `quality`,
+        minLength: 0,
+        minStars: 0,
+      },
     };
 
-    // this.getTrails();
     this.getTrails = this.getTrails.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
+    this.geocoding = this.geocoding.bind(this);
+    this.searchTrails = this.searchTrails.bind(this);
   }
 
   // filter those trails by several parameters.
@@ -210,192 +231,43 @@ class Trails extends  React.Component {
     }
   }
 
-  getTrails() {
-    const exTrails = {
-      "trails": [
-        {
-          "id": 7000130,
-          "name": "Bear Peak Out and Back",
-          "type": "Featured Hike",
-          "summary": "A must-do hike for Boulder locals and visitors alike!",
-          "difficulty": "blueBlack",
-          "stars": 4.6,
-          "starVotes": 109,
-          "location": "Boulder, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7000130\/bear-peak-out-and-back",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7005382_sqsmall_1554312030.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7005382_small_1554312030.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7005382_smallMed_1554312030.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7005382_medium_1554312030.jpg",
-          "length": 5.7,
-          "ascent": 2541,
-          "descent": -2540,
-          "high": 8342,
-          "low": 6103,
-          "longitude": -105.2755,
-          "latitude": 39.9787,
-          "conditionStatus": "Unknown",
-          "conditionDetails": null,
-          "conditionDate": "1970-01-01 00:00:00"
-        },
-        {
-          "id": 7001019,
-          "name": "Betasso Preserve",
-          "type": "Featured Hike",
-          "summary": "This hike is easily accessible from Boulder and offers amazing singletrack with beautiful views.",
-          "difficulty": "blue",
-          "stars": 4.1,
-          "starVotes": 60,
-          "location": "Boulder, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7001019\/betasso-preserve",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_sqsmall_1554920151.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_small_1554920151.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_smallMed_1554920151.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_medium_1554920151.jpg",
-          "length": 6.7,
-          "ascent": 776,
-          "descent": -778,
-          "high": 6575,
-          "low": 6178,
-          "longitude": -105.3446,
-          "latitude": 40.0164,
-          "conditionStatus": "All Clear",
-          "conditionDetails": "Mostly Dry, Some Mud - 90%+ clear and dry with few muddy patches",
-          "conditionDate": "2019-11-16 13:57:20"
-        },
-        {
-          "id": 7017569,
-          "name": "Marshall Mesa to Spring Brook Loop",
-          "type": "Featured Hike",
-          "summary": "Some of the best trails that Boulder has to offer with a variety of options that never get old.",
-          "difficulty": "blue",
-          "stars": 4.3,
-          "starVotes": 26,
-          "location": "Superior, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7017569\/marshall-mesa-to-spring-brook-loop",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_sqsmall_1554226116.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_small_1554226116.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_smallMed_1554226116.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_medium_1554226116.jpg",
-          "length": 11.1,
-          "ascent": 893,
-          "descent": -893,
-          "high": 6236,
-          "low": 5567,
-          "longitude": -105.2313,
-          "latitude": 39.9527,
-          "conditionStatus": "All Clear",
-          "conditionDetails": "Muddy, Snowy - Super fun but challenging in these conditions.",
-          "conditionDate": "2019-11-04 23:41:09"
-        },
-        {
-          "id": 7005887,
-          "name": "Sugarloaf Mountain",
-          "type": "Featured Hike",
-          "summary": "The best bang-for-your-buck view trail in Boulder County.",
-          "difficulty": "greenBlue",
-          "stars": 4.4,
-          "starVotes": 19,
-          "location": "Boulder, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7005887\/sugarloaf-mountain",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_sqsmall_1554931128.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_small_1554931128.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_smallMed_1554931128.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_medium_1554931128.jpg",
-          "length": 1.4,
-          "ascent": 432,
-          "descent": -432,
-          "high": 8892,
-          "low": 8460,
-          "longitude": -105.4251,
-          "latitude": 40.0255,
-          "conditionStatus": "Minor Issues",
-          "conditionDetails": "Dry",
-          "conditionDate": "2019-09-11 21:25:47"
-        },
-        {
-          "id": 7001019,
-          "name": "Betasso Preserve",
-          "type": "Featured Hike",
-          "summary": "This hike is easily accessible from Boulder and offers amazing singletrack with beautiful views.",
-          "difficulty": "blue",
-          "stars": 4.1,
-          "starVotes": 60,
-          "location": "Boulder, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7001019\/betasso-preserve",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_sqsmall_1554920151.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_small_1554920151.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_smallMed_1554920151.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7029200_medium_1554920151.jpg",
-          "length": 6.7,
-          "ascent": 776,
-          "descent": -778,
-          "high": 6575,
-          "low": 6178,
-          "longitude": -105.3446,
-          "latitude": 40.0164,
-          "conditionStatus": "All Clear",
-          "conditionDetails": "Mostly Dry, Some Mud - 90%+ clear and dry with few muddy patches",
-          "conditionDate": "2019-11-16 13:57:20"
-        },
-        {
-          "id": 7017569,
-          "name": "Marshall Mesa to Spring Brook Loop",
-          "type": "Featured Hike",
-          "summary": "Some of the best trails that Boulder has to offer with a variety of options that never get old.",
-          "difficulty": "blue",
-          "stars": 4.3,
-          "starVotes": 26,
-          "location": "Superior, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7017569\/marshall-mesa-to-spring-brook-loop",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_sqsmall_1554226116.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_small_1554226116.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_smallMed_1554226116.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7002458_medium_1554226116.jpg",
-          "length": 11.1,
-          "ascent": 893,
-          "descent": -893,
-          "high": 6236,
-          "low": 5567,
-          "longitude": -105.2313,
-          "latitude": 39.9527,
-          "conditionStatus": "All Clear",
-          "conditionDetails": "Muddy, Snowy - Super fun but challenging in these conditions.",
-          "conditionDate": "2019-11-04 23:41:09"
-        },
-        {
-          "id": 7005887,
-          "name": "Sugarloaf Mountain",
-          "type": "Featured Hike",
-          "summary": "The best bang-for-your-buck view trail in Boulder County.",
-          "difficulty": "greenBlue",
-          "stars": 4.4,
-          "starVotes": 19,
-          "location": "Boulder, Colorado",
-          "url": "https:\/\/www.hikingproject.com\/trail\/7005887\/sugarloaf-mountain",
-          "imgSqSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_sqsmall_1554931128.jpg",
-          "imgSmall": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_small_1554931128.jpg",
-          "imgSmallMed": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_smallMed_1554931128.jpg",
-          "imgMedium": "https:\/\/cdn-files.apstatic.com\/hike\/7031490_medium_1554931128.jpg",
-          "length": 1.4,
-          "ascent": 432,
-          "descent": -432,
-          "high": 8892,
-          "low": 8460,
-          "longitude": -105.4251,
-          "latitude": 40.0255,
-          "conditionStatus": "Minor Issues",
-          "conditionDetails": "Dry",
-          "conditionDate": "2019-09-11 21:25:47"
-        }
-      ],
-      "success": 1
-    };
+  async geocoding(location) {
+    location = location.split(/\s|,\s|,/i).join('+');
+    let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${process.env.REACT_APP_GOOGLE_API}`;
 
-    if (exTrails.success === 0)
-      alert('Get Trails from Hiking Project failed.');
+    try {
+      let res = await fetch(url);
+      res = await res.json();
 
-    this.setState({trails: exTrails.trails});
+      console.log(res);
+      return res.results[0].geometry.location;
+    } catch(e) {
+      console.log("Oops, error", e);
+    }
+  }
+
+  async getTrails(loca) {
+    // update new parameter
+    let parameters = this.state.default_para;
+    // console.log(loca);
+    parameters.lon = loca.lng;
+    parameters.lat = loca.lat;
+    this.setState({default_para: parameters});
+    console.log(parameters.lng);
+    console.log(parameters.lat);
+
+    let url = `https://www.hikingproject.com/data/get-trails?lat=${parameters.lat}&lon=${parameters.lon}&maxDistance=${parameters.maxDistance}&maxResults=${parameters.maxResults}&sort=${parameters.sort}&minLength=${parameters.minLength}&minStars=${parameters.minStars}&key=${process.env.REACT_APP_HIKING_PROJECT_API}`;
+    console.log(url);
+
+    let x;
+    try {
+      let res = await fetch(url);
+      res = await res.json();
+      x = res;
+    } catch(e) {
+      console.log("Oops, error", e);
+    }
+    this.setState({trails: x.trails});
   }
 
   // change pages.
@@ -409,7 +281,6 @@ class Trails extends  React.Component {
   }
 
   nextPage() {
-    // console.log(this.state);
     if(this.state.num < this.state.trails.length/5)
       this.setState({
         num: this.state.num+1,
@@ -418,22 +289,41 @@ class Trails extends  React.Component {
       alert('This is the last page.');
   }
 
-  componentWillMount() {
-    this.getTrails();
+  async componentDidMount() {
+    const loca = await this.geocoding('portland');
+    this.getTrails(loca);
+    this.filterTrails();
+  }
+
+  // when search trails, call this function
+  async searchTrails(address) {
+    console.log(address);
+    const loca = await this.geocoding(address);
+    const trails = this.getTrails(loca);
+    this.filterTrails();
   }
 
   render() {
-    // this.getTrails();
-    this.filterTrails();
     // current page number.
     const num = this.state.num;
+    console.log(this.state.num);
+    console.log(this.state.trails);
     // current display trails.
-    const trails = this.state.trails.slice((num-1)*5, num*5);
+    let trails = [];
+    let center = {lat: this.state.default_para.lat, lng: this.state.default_para.lon};
+    if (this.state.trails.length !== 0) {
+      console.log('get info');
+      trails = this.state.trails.slice((num-1)*5, num*5);
+      center = {lat: trails[0].latitude, lng: trails[0].longitude};
+    }
 
+    console.log(center);
+    console.log('begin render');
     return (
       <div className="trails">
-        <div className='trails-title'>Hot Trails</div>
-        <Trails_map num={num} trails={trails} id='trails-map' options={{center: { lat: trails[0].latitude, lng: trails[0].longitude }, zoom: 12, mapTypeId: 'terrain'}} />
+        <div className='search-title'>Explore Now</div>
+        <Trails_search className='search' searchTrails={this.searchTrails} />
+        <Trails_map num={num} trails={trails} id='map' options={{center, zoom: 10, mapTypeId: 'terrain'}} />
         <Trails_list trails={trails} />
         <Trails_page num={num} previousPage={this.previousPage} nextPage={this.nextPage} />
       </div>
@@ -444,7 +334,7 @@ class Trails extends  React.Component {
 function App() {
   return (
     <div>
-      <Welcome title={(<Trails_find findTrails={Trails.findTrails} />)} />
+      <Welcome title={(<Trails_title />)} />
       <Trails />
       <Footer />
     </div>
