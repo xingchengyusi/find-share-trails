@@ -45,6 +45,8 @@ class Trails_map extends React.Component {
     this.markerClear = this.markerClear.bind(this);
     // load new markers in the current page
     this.markerLoad = this.markerLoad.bind(this);
+    // recenter the map when the list is update
+    this.recenter = this.recenter.bind(this);
   }
 
   onScriptLoad() {
@@ -83,6 +85,13 @@ class Trails_map extends React.Component {
     this.setState({markers: []});
   }
 
+  recenter() {
+    let map = this.state.map;
+    map.setCenter(this.props.options.center);
+    // console.log(map);
+    this.setState({map: map});
+  }
+
   componentDidMount() {
     if (!window.google){
       let googlescript = document.createElement('script');
@@ -103,9 +112,8 @@ class Trails_map extends React.Component {
     if (this.props.num !== this.state.num) {
       this.markerClear();
       this.markerLoad();
-      this.setState({
-        num: this.props.num,
-      })
+      this.setState({num: this.props.num,});
+      this.recenter();
     }
   }
 
@@ -164,7 +172,7 @@ class Trails_search extends React.Component {
 
   render() {
     return (
-      <form className='trails-find' id='trails-find' onSubmit={this.handleSubmit}>
+      <form className='search' id='trails-find' onSubmit={this.handleSubmit}>
         <input type="text" placeholder='trail location' value={this.state.value} onChange={this.handleChange} />
         <input type='submit' value='Find'/>
       </form>
@@ -273,18 +281,14 @@ class Trails extends  React.Component {
   // change pages.
   previousPage() {
     if (this.state.num > 1)
-      this.setState({
-        num: this.state.num-1,
-      });
+      this.setState({num: this.state.num-1,});
     else
       alert('This is the first page.');
   }
 
   nextPage() {
     if(this.state.num < this.state.trails.length/5)
-      this.setState({
-        num: this.state.num+1,
-      });
+      this.setState({num: this.state.num+1,});
     else
       alert('This is the last page.');
   }
@@ -297,7 +301,7 @@ class Trails extends  React.Component {
 
   // when search trails, call this function
   async searchTrails(address) {
-    console.log(address);
+    // console.log(address);
     const loca = await this.geocoding(address);
     const trails = this.getTrails(loca);
     this.filterTrails();
@@ -317,12 +321,12 @@ class Trails extends  React.Component {
       center = {lat: trails[0].latitude, lng: trails[0].longitude};
     }
 
-    console.log(center);
-    console.log('begin render');
+    // console.log(center);
+    // console.log('begin render');
     return (
       <div className="trails">
         <div className='search-title'>Explore Now</div>
-        <Trails_search className='search' searchTrails={this.searchTrails} />
+        <Trails_search searchTrails={this.searchTrails} />
         <Trails_map num={num} trails={trails} id='map' options={{center, zoom: 10, mapTypeId: 'terrain'}} />
         <Trails_list trails={trails} />
         <Trails_page num={num} previousPage={this.previousPage} nextPage={this.nextPage} />
