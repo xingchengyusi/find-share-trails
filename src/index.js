@@ -11,6 +11,10 @@ const Router = () => (
     <Switch>
       <Route exact path='/' component={App} />
       <Route exact path='/about' component={About} />
+      <Route exact path='/database' component={() => {
+        window.location.href = 'https://script.google.com/macros/s/AKfycbyfMV84qnntX_Wgks26-tNOOGHQ9xQcJ2MWVi4XQxpHcYoqXgl5/exec';
+        return null;
+      }} />
     </Switch>
   </HashRouter>
 );

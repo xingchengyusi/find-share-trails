@@ -28,6 +28,7 @@ class Welcome extends React.Component {
           <a href='#/'><i className="fas fa-hiking welcome-page" /></a>
           <Welcome_page link={"#/"} name={"Home"} />
           <Welcome_page link={"#/about"} name={"About"} />
+          <Welcome_page link={'#/database'} name={'Data'} />
         </div>
         <Welcome_title title={this.props.title} />
       </div>

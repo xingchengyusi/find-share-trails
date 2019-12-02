@@ -1,38 +1,67 @@
+/* the whole trails part in there:
+ * 1. trails search
+ * 2. filter of trails
+ * 3. trails list
+ * 4. trails map
+ */
 .trails {
   width: 90vw;
-  height: 100vh;
+  height: 50rem;
   padding: 0 5vw 3rem 5vw;
+  /* display: grid; */
+  /* grid-template-columns: 1fr 4fr; */
+  /* grid-template-rows: 2fr 2fr 1.5fr 15fr 1fr; */
+  /* grid-gap: 0.5rem; */
+  /* grid-template-areas: 'title title' 'find find' 'filter filter' 'li map' 'pagenum map'; */
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: 2fr 2fr 1.5fr 15fr 1fr;
+  grid-template-rows: 4fr 1.5fr 15fr 1fr;
   grid-gap: 0.5rem;
-  grid-template-areas: 'title title' 'find find' 'filter filter' 'li map' 'pagenum map';
+  grid-template-areas: 'search search' 'filter filter' 'li map' 'page map';
+}
+
+/* trails search
+ * 1. title
+ * 2. text container
+ * 3. button to submit form
+ */
+.search {
+  grid-area: search;
 }
 
 .search-title {
-  grid-area: title;
 }
 
-.search {
-  grid-area: find;
+.search-text {
 }
 
+/* filter of trails. now just text
+ */
+ .filter {
+  grid-area: filter;
+}
+
+/* google map
+ * just map
+ */
 .map {
   grid-area: map;
   border-radius: 1rem;
 }
 
-.trails-filter {
-  grid-area: filter;
-}
-
+/* the list of trails.
+ * 1. five trail cards.
+ * 2. page change.
+ */
 .trails-list {
   grid-area: li;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 0.4rem;
 }
 
+/* trail card */
 .list-item {
   margin: 0.3rem;
   background: white;
@@ -65,8 +94,12 @@
   grid-area: fav;
 }
 
+/* control page change
+ * 1. two buttons to change page
+ * 2. page number display
+ */
 .page {
-  grid-area: pagenum;
+  grid-area: page;
   text-align: center;
   display: flex;
   flex-direction: row;
@@ -81,7 +114,7 @@
 
 .page-change {
   height: 100%;
-  width: 30%;
+  /* width: 30%; */
   border: none;
   background-color: greenyellow;
   color: black;
