@@ -1,9 +1,11 @@
+/* global gapi */
 import React from 'react';
 import './App.css';
 import Welcome from "./Welcome";
 import Footer from './Footer';
+import JWT from './findsharetrails-52b6cb56eeb0';
 
-class Trails_title extends React.Component {
+class TrailsTitle extends React.Component {
   render() {
     return (
       <div className='title'>Find Your Trails</div>
@@ -11,21 +13,64 @@ class Trails_title extends React.Component {
   }
 }
 
-class Trails_data extends React.Component {
+class TrailsData extends React.Component {
   constructor(props) {
     super(props);
 
     this.addtofav = this.addtofav.bind(this);
+    this.initialGoogleClient = this.initialGoogleClient.bind(this);
+  }
 
-    // create a google sheet api client
+  initialGoogleClient() {
+    let z = window.gapi.client.init({
+      apiKey: process.env.REACT_APP_GOOGLE_API,
+      discoveryDocs: [`${process.env.REACT_APP_DISCOVERY_DOC}`],
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/spreadsheets',
+    });
+    // console.log(JWT);
+    let y = window.gapi.client.setToken({access_token: JWT});
+    let x = window.gapi.client.load('sheet', 'v4');
+    // console.log('this is y:');
+    // console.log(y);
   }
 
   addtofav() {
-    alert('click');
+    // alert('click');
+    let data = {
+      "values": [
+        [
+          this.props.trail.name,
+          this.props.trail.summery,
+          this.props.trail.difficulty,
+          this.props.trail.stars,
+          this.props.trail.location,
+          this.props.trail.length,
+          this.props.trail.ascent,
+        ]
+      ]
+    };
+    window.gapi.client.sheet.spreadsheets.values.append({
+      "spreadsheetId": "process.env.REACT_APP_SPREAD_SHEET_ID",
+      "range": "A2",
+      "includeValuesInResponse": true,
+      "insertDataOption": "INSERT_ROWS",
+      "valueInputOption": "RAW",
+      "resource": data,
+    })
+    .then((response) => { console.log('success', response); },
+    (err) => { console.error('append error', err); }
+    )
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // window.gapi.load("client", this.initClient);
+    window.gapi.load("client")
+    .then(() => {console.log("GAPI client loaded for API");},
+      (err) => {console.error("Error loading GAPI client for API", err);}
+      );
+    this.initialGoogleClient();
+    // this.setState({gapi: x});
   }
 
   render() {
@@ -37,7 +82,7 @@ class Trails_data extends React.Component {
   }
 }
 
-class Trails_list extends React.Component {
+class TrailsList extends React.Component {
   render() {
     // always receive five items that should be displayed.
     this.trailsList = this.props.trails.map((trail) =>
@@ -46,7 +91,7 @@ class Trails_list extends React.Component {
         <div className='list-item-length'>{trail.length}miles</div>
         <div className='list-item-ascent'>{trail.ascent}m</div>
         <div className='list-item-state'>{trail.conditionStatus}</div>
-        <Trails_data trails={trail} />
+        <TrailsData trail={trail} />
       </div>
     );
     console.log('in trails list');
@@ -59,14 +104,14 @@ class Trails_list extends React.Component {
   }
 }
 
-class Trails_map extends React.Component {
+class TrailsMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       map: Object,
       markers: [],
       num: 0,
-    }
+    };
 
     // when the component mount, load map and markers in the first page
     this.onScriptLoad = this.onScriptLoad.bind(this);
@@ -80,7 +125,7 @@ class Trails_map extends React.Component {
 
   onScriptLoad() {
     this.setState({map: new window.google.maps.Map(document.getElementById(this.props.id), this.props.options)});
-    this.markerLoad();
+    // this.markerLoad();
   }
 
   markerLoad() {
@@ -95,7 +140,7 @@ class Trails_map extends React.Component {
         map: this.state.map,
         title: t.name,
         label: String(i+1),
-      })
+      });
       markers.push(mark);
     }
 
@@ -137,13 +182,13 @@ class Trails_map extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('in trails map')
-    console.log(this.state.markers);
-    console.log(this.state.num);
-    console.log(this.props.num);
-    console.log(this.props.trails);
+    console.log('in trails map');
+    // console.log(this.state.markers);
+    // console.log(this.state.num);
+    // console.log(this.props.num);
+    // console.log(this.props.trails);
     // console.log(this.name);
-    if (this.props.trails !== [] && this.props.num !== this.state.num) {
+    if (this.props.num !== this.state.num) {
       console.log(this.name);
       this.markerClear();
       this.markerLoad();
@@ -160,7 +205,7 @@ class Trails_map extends React.Component {
   }
 }
 
-class Trails_page extends React.Component {
+class TrailsPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -189,7 +234,7 @@ class Trails_page extends React.Component {
   }
 }
 
-class Trails_search extends React.Component {
+class TrailsSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
@@ -206,6 +251,7 @@ class Trails_search extends React.Component {
     e.preventDefault();
     console.log(this.state.value);
     this.props.searchTrails(this.state.value);
+    this.setState({value: ''});
   }
 
   render() {
@@ -221,7 +267,7 @@ class Trails_search extends React.Component {
   }
 }
 
-class Trails_filter extends React.Component {
+class TrailsFilter extends React.Component {
   render() {
     return (
       <div className='filter'>This is a filter.</div>
@@ -265,36 +311,36 @@ class Trails extends  React.Component {
     });
   }
 
-  // filter those trails by several parameters.
-  filterTrails() {
-    if (this.state.filter.weather === 1)
-      this.filterByWeather();
-    if (this.state.filter.condition === 1)
-      this.filterByCondition();
-  }
-
-  filterByWeather() {
-  }
-
-  filterByCondition() {
-    let time = new Date();
-    // filter condition in all trails
-    for (let i = 0; i < this.state.trails.length; i++) {
-      let t = this.state.trails[i];
-      // available param: 0: danger 1: safe 2: don't know
-      t.available = 1;
-
-      // the condition may be keep some times. so just 1 year.
-      let tdate = new Date(t.conditionDate);
-      tdate.setFullYear(tdate.getFullYear()-1);
-      // by date.
-      if (tdate < time)
-        t.available = 2;
-      else if (t.conditionStatus === ("Unknown" || "Minor Issues"))
-        // by condition.
-        t.available = 0;
-    }
-  }
+  // // filter those trails by several parameters.
+  // filterTrails() {
+  //   if (this.state.filter.weather === 1)
+  //     this.filterByWeather();
+  //   if (this.state.filter.condition === 1)
+  //     this.filterByCondition();
+  // }
+  //
+  // filterByWeather() {
+  // }
+  //
+  // filterByCondition() {
+  //   let time = new Date();
+  //   // filter condition in all trails
+  //   for (let i = 0; i < this.state.trails.length; i++) {
+  //     let t = this.state.trails[i];
+  //     // available param: 0: danger 1: safe 2: don't know
+  //     t.available = 1;
+  //
+  //     // the condition may be keep some times. so just 1 year.
+  //     let tdate = new Date(t.conditionDate);
+  //     tdate.setFullYear(tdate.getFullYear()-1);
+  //     // by date.
+  //     if (tdate < time)
+  //       t.available = 2;
+  //     else if (t.conditionStatus === ("Unknown" || "Minor Issues"))
+  //       // by condition.
+  //       t.available = 0;
+  //   }
+  // }
 
   async geocoding(location) {
     location = location.split(/\s|,\s|,/i).join('+');
@@ -334,20 +380,21 @@ class Trails extends  React.Component {
     }
     // this.setState({trails: x.trails});
     this.setStateAsync({trails: x.trails});
-    return 1;
   }
 
   // change pages.
   previousPage() {
     if (this.state.num > 1)
-      this.setState({num: this.state.num-1,});
+      this.setStateAsync({num: this.state.num-1,});
+      // this.setState({num: this.state.num-1,});
     else
       alert('This is the first page.');
   }
 
   nextPage() {
     if(this.state.num < this.state.trails.length/5)
-      this.setStateAsync({num: this.state.num+1});
+      this.setStateAsync({num: this.state.num+1,});
+      // this.setStateAsync({num: this.state.num+1});
       // this.setState({num: this.state.num+1,});
     else
       alert('This is the last page.');
@@ -356,7 +403,7 @@ class Trails extends  React.Component {
   async componentDidMount() {
     const loca = await this.geocoding('portland');
     let x = await this.getTrails(loca);
-    this.filterTrails();
+    // this.filterTrails();
   }
 
   // when search trails, call this function
@@ -364,7 +411,7 @@ class Trails extends  React.Component {
     // console.log(address);
     const loca = await this.geocoding(address);
     let x = await this.getTrails(loca);
-    this.filterTrails();
+    // this.filterTrails();
   }
 
   render() {
@@ -386,11 +433,11 @@ class Trails extends  React.Component {
     console.log(num);
     return (
       <div className="trails">
-        <Trails_search searchTrails={this.searchTrails} />
-        <Trails_filter />
-        <Trails_map num={num} trails={trails} id='map' options={{center, zoom: 10, mapTypeId: 'terrain'}} />
-        <Trails_list num={num} trails={trails} />
-        <Trails_page num={num} previousPage={this.previousPage} nextPage={this.nextPage} />
+        <TrailsSearch searchTrails={this.searchTrails} />
+        <TrailsFilter />
+        <TrailsMap num={num} trails={trails} id='map' options={{center, zoom: 10, mapTypeId: 'terrain'}} />
+        <TrailsList num={num} trails={trails} />
+        <TrailsPage num={num} previousPage={this.previousPage} nextPage={this.nextPage} />
       </div>
     );
   }
@@ -399,7 +446,7 @@ class Trails extends  React.Component {
 function App() {
   return (
     <div>
-      <Welcome title={(<Trails_title />)} />
+      <Welcome title={(<TrailsTitle />)} />
       <Trails />
       <Footer />
     </div>

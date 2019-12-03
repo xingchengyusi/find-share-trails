@@ -7,7 +7,7 @@ class Title extends React.Component {
   render() {
     return (
       <div className='title'>About</div>
-    )
+    );
   }
 }
 
@@ -17,7 +17,8 @@ class Introduce extends React.Component {
       <div className='intro'>
         <div className='intro-title'>ABOUT</div>
         <div className='intro-normal'>
-          The is a React Web Application that create by <a className='intro-normal'>Ching-Wei Lin</a> and <a className='intro-normal'>Dajun Gu</a>.
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          The is a React Web Application that create by <a href={null} className='intro-normal'>Ching-Wei Lin</a> and <a href={null} className='intro-normal'>Dajun Gu</a>.
         </div>
       </div>
     );

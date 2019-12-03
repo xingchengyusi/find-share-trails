@@ -2,7 +2,7 @@ import React from 'react';
 import './Welcome.css'
 
 // first welcome part
-class Welcome_page extends React.Component {
+class WelcomePage extends React.Component {
   render() {
     return (
       <div className="welcome-page">
@@ -12,7 +12,7 @@ class Welcome_page extends React.Component {
   }
 }
 
-class Welcome_title extends React.Component {
+class WelcomeTitle extends React.Component {
   render() {
     return (
       <div>{this.props.title}</div>
@@ -26,11 +26,11 @@ class Welcome extends React.Component {
       <div className="welcome">
         <div className="welcome-page-container">
           <a href='#/'><i className="fas fa-hiking welcome-page" /></a>
-          <Welcome_page link={"#/"} name={"Home"} />
-          <Welcome_page link={"#/about"} name={"About"} />
-          <Welcome_page link={'#/database'} name={'Data'} />
+          <WelcomePage link={"#/"} name={"Home"} />
+          <WelcomePage link={"#/about"} name={"About"} />
+          <WelcomePage link={'#/database'} name={'Data'} />
         </div>
-        <Welcome_title title={this.props.title} />
+        <WelcomeTitle title={this.props.title} />
       </div>
     )
   }
