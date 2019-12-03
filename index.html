@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style type="text/css">
+      .general_text {
+        font-family: "Helvetica";
+      }
+      .update_test {
+        font-family: "Helvetica";
+        color: red;
+      }
+      .op_button {
+        font-family: "Helvetica";
+        background-color: rgb(30,30,120);
+        border: none;
+        color: white;
+        padding: 2px 5px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 3px;
+      }
+      .op_button:hover {
+        background-color: grey;
+        color: white;
+      }
+      .op_button:active {
+        background-color: grey;
+        box-shadow: 0 3px #666;
+        transform: translateY(2px);
+      }
+      .li_button {
+        background-color: #D3D3D3;
+        border: none;
+        color: black;
+        padding: 5px 10px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+      .li_button:hover {
+        background-color: #C0C0C0;
+        color: black;
+      }
+      .li_button:active {
+        background-color: grey;
+        box-shadow: 0 3px #666;
+        transform: translateY(2px);
+      }
+      li {
+        margin: 15px;
+      }
+      body {
+        margin-left: 37%;
+      }
+    </style>
+  </head>
+ 
+  <body>
+    <h1 class="general_text"> Oregon Trails</h1>
+    <label class="general_text"> Search By Name: </label> <input type=text id=script_name> <button onClick=searchByName() class="op_button"> search </button>
+    <br><br>
+    <label class="general_text"> Search By Season: </label> <input type=text id=tag_name> <button onClick=searchByTag() class="op_button"> search </button>
+    <br><br>
+    <button onClick="listAllScripts()" class="op_button"> List All Reports </button> 
+    <button onClick="clearAll()" class="op_button"> Clear </button>
+    <br>
+    <ul id="scripts"></ul>
+    <button onClick="listAllScripts()" class="op_button"> back </button>
+    
+  <script>
+    var index = 0;
+    var page_history = [""];
+    
+    function listAllScripts(){
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("scripts").innerHTML = "";
+      for (var i=0; i<response.length; i++) {
+        document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>" 
+        + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" +"</li>";
+      }
+      
+      // document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
+      }).listAllScripts();
+      
+    }
+    
+    function clearAll(){
+      document.getElementById("scripts").innerHTML = ""
+    }
+    function displayDetail(name){
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("scripts").innerHTML = "";
+      for (var i=0; i<response.length; i++) {
+      document.getElementById("scripts").innerHTML += "<li class='general_text'>" + response[i] + "</li>";
+      }
+      //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
+      }).display_detail(name);
+    }
+    
+    function searchByName() {
+      var to_search = document.getElementById("script_name").value.toString();
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("scripts").innerHTML = "";
+      if (response[0] == "No script found") {
+        document.getElementById("scripts").innerHTML = "No report Found";
+      }
+      else {
+        for (var i=0; i<response.length; i++) {
+          document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>"
+          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" + "</li>";
+        }
+        //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
+      }
+      }).search_by_name(to_search);
+    }
+    
+    function searchByTag() {
+      var to_search = document.getElementById("tag_name").value;
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("scripts").innerHTML = "";
+      if (response[0] == "No script found") {
+        document.getElementById("scripts").innerHTML = "No report Found";
+      }
+      else {
+        for (var i=0; i<response.length; i++) {
+          document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>" 
+          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" + "</li>";
+        }
+        //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
+      }
+      }).search_by_season(to_search);
+    }
+    
+  </script>
+  </body>
+  
+</html>
