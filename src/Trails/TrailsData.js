@@ -6,6 +6,15 @@ export default class TrailsData extends React.Component {
 
     this.addtofav = this.addtofav.bind(this);
     // this.initialGoogleClient = this.initialGoogleClient.bind(this);
+    this.getWeather = this.getWeather.bind(this);
+  }
+
+  async getWeather() {
+    let url = `api.openweathermap.org/data/2.5/weather?lat=${this.props.trail.latitude}&lon=${this.props.trail.longitude}&APPID=${process.env.REACT_APP_OPEN_WEATHER_MAP_API}`;
+    let weather = await fetch(url);
+    weather = await weather.json();
+    console.log(weather);
+    return weather.weather[0].main;
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -41,9 +50,15 @@ export default class TrailsData extends React.Component {
   }
 
   render() {
+    let simpleWeather = this.getWeather();
+    console.log(simpleWeather);
+    if (!simpleWeather) {
+      simpleWeather = 'unknown';
+    }
     return (
       <div className='database'>
-        <button type='button' value='Add' onClick={this.addtofav}>Add</button>
+        <div>{simpleWeather}</div>
+        {/* <button type='button' value='Add' onClick={this.addtofav}>Add</button> */}
       </div>
     )
   }

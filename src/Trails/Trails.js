@@ -19,7 +19,7 @@ export default class Trails extends  React.Component {
         lat: 39.9787,
         lon: -105.2755,
         maxDistance: 30,
-        maxResults: 10,
+        maxResults: 30,
         sort: `quality`,
         minLength: 0,
         minStars: 0,
