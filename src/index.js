@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import About from "./About";
+import About from "./About/About";
 import * as serviceWorker from './serviceWorker';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 
@@ -11,10 +11,6 @@ const Router = () => (
     <Switch>
       <Route exact path='/' component={App} />
       <Route exact path='/about' component={About} />
-      <Route exact path='/database' component={() => {
-        window.location.href = 'https://script.google.com/macros/s/AKfycbyfMV84qnntX_Wgks26-tNOOGHQ9xQcJ2MWVi4XQxpHcYoqXgl5/exec';
-        return null;
-      }} />
     </Switch>
   </HashRouter>
 );

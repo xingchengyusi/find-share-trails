@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Welcome from "./Welcome";
-import Footer from './Footer';
+import Welcome from "./Other/Welcome";
+import Footer from './Other/Footer';
 import Trails from './Trails/Trails';
 
 class TrailsTitle extends React.Component {

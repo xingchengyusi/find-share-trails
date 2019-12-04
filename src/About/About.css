@@ -1,5 +1,5 @@
 .intro {
-  margin: 0;
+  margin: 0 0 10vh 0;
   text-align: center;
   width: 100vw;
   height: auto;
@@ -7,8 +7,14 @@
 
 .intro-title {
   font-size: 2rem;
+  margin: 0 0 1rem 0;
 }
 
 .intro-normal {
   font-size: 1rem;
+}
+
+.member {
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
 }
