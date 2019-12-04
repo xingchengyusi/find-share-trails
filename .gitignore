@@ -27,4 +27,4 @@ yarn-error.log*
 
 # api key
 .env
-/src/findsharetrails-52b6cb56eeb0.json
+src/FindShareTrails-0fb4b143f90c.json
