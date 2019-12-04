@@ -71,10 +71,11 @@ export default class TrailsList extends React.Component {
     this.trailsList = this.props.trails.map((trail) =>
       <div className='list-item' key={trail.id}>
         <div className='list-item-title'>{trail.name}</div>
-        <div className='list-item-length'>{trail.length}miles</div>
-        <div className='list-item-ascent'>{trail.ascent}m</div>
-        <div className='list-item-state'>{trail.conditionStatus}</div>
-        <TrailsData key={trail.id} trail={trail} />
+        <div className='list-item-length'><i class="fas fa-route"></i>{trail.length}miles</div>
+        <div className='list-item-ascent'><i class="fas fa-angle-double-up"></i>{trail.ascent}m</div>
+        <div className='list-item-high'>{trail.high}m</div>
+        <div className='list-item-state'><i class="fas fa-info"></i>{trail.conditionStatus}</div>
+        {/* <TrailsData key={trail.id} trail={trail} /> */}
       </div>
     );
 

@@ -22,7 +22,7 @@
   /* grid-template-areas: 'title title' 'find find' 'filter filter' 'li map' 'pagenum map'; */
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: 3fr 15fr 2fr;
+  grid-template-rows: 3fr 15fr 1fr;
   grid-gap: 0.5rem;
   grid-template-areas: 'search search' 'li map' 'page map';
 }
@@ -117,6 +117,7 @@
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: 'title title' 'length ascent' 'state fav';
+  align-items: center;
 }
 
 .list-item:hover {
@@ -134,6 +135,10 @@
 
 .list-item-add {
   grid-area: fav;
+}
+
+.fa-angle-double-up,.fa-route,.fa-info {
+  margin-right: 0.3rem;
 }
 
 /* control page change
@@ -165,4 +170,8 @@
 .page-change:hover {
   background-color: blue;
   color: white;
+}
+
+.fa-arrow-left,.fa-arrow-right {
+  font-size: 1.5rem;
 }

@@ -25,9 +25,13 @@ export default class TrailsPage extends React.Component {
     // console.log(this.props.num);
     return (
       <div id='page' className='page'>
-        <button className='page-change page-pre' onClick={this.previousPage}>Previous</button>
+        <button className='page-change' onClick={this.previousPage}>
+          <i class="fas fa-arrow-left"></i>
+        </button>
         <div className='page-num'>{this.props.num}</div>
-        <button className='page-change page-next' onClick={this.nextPage}>Next</button>
+        <button className='page-change' onClick={this.nextPage}>
+          <i class="fas fa-arrow-right"></i>
+        </button>
       </div>
     );
   }
