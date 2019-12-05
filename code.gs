@@ -2,6 +2,22 @@ function doGet() {
   return HtmlService.createHtmlOutputFromFile("index");
 }
 
+function delete_One(one) {
+  var url = "https://docs.google.com/spreadsheets/d/1qO4qmB16ZEJnUWilwUo9MDdW_zDzI1DtHc7qUIGBbUQ/edit#gid=0";
+  var spread_sheet = SpreadsheetApp.openByUrl(url);
+  var ws = spread_sheet.getSheetByName("trails");
+  ws.deleteRow(one);
+  return;
+}
+
+function add_One(t_name, sum, dif, star, loca, dis, ele, sea) {
+  var url = "https://docs.google.com/spreadsheets/d/1qO4qmB16ZEJnUWilwUo9MDdW_zDzI1DtHc7qUIGBbUQ/edit#gid=0";
+  var spread_sheet = SpreadsheetApp.openByUrl(url);
+  var ws = spread_sheet.getSheetByName("trails");
+  ws.appendRow([t_name, sum, dif, star, loca, dis, ele, sea]);
+  return;
+}
+
 function listAllScripts() {
   var url = "https://docs.google.com/spreadsheets/d/1qO4qmB16ZEJnUWilwUo9MDdW_zDzI1DtHc7qUIGBbUQ/edit#gid=0";
   var spread_sheet = SpreadsheetApp.openByUrl(url);
