@@ -36,7 +36,6 @@ export default class TrailsMap extends React.Component {
 
   onScriptLoad() {
     this.setState({map: new window.google.maps.Map(document.getElementById(this.props.id), this.props.options)});
-    // this.markerLoad();
   }
 
   markerLoad() {
@@ -55,9 +54,7 @@ export default class TrailsMap extends React.Component {
       markers.push(mark);
     }
 
-    this.setState({
-      markers: markers,
-    })
+    this.setState({markers: markers,});
   }
 
   markerClear() {
@@ -93,20 +90,12 @@ export default class TrailsMap extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('in trails map');
-    // console.log(this.state.markers);
-    // console.log(this.state.num);
-    // console.log(this.props.num);
-    // console.log(this.props.trails);
-    // console.log(this.name);
-    // if (this.props.num !== this.state.num) {
-      console.log(this.name);
-      this.markerClear();
-      this.markerLoad();
-      this.setState({num: this.props.num,});
-      this.recenter();
-    // }
-    // console.log(this.name);
+    // console.log('in trails map');
+    console.log(this.name);
+    this.markerClear();
+    this.markerLoad();
+    this.setState({num: this.props.num,});
+    this.recenter();
   }
 
   render() {

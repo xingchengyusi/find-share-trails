@@ -3,7 +3,7 @@ import TrailsList from './TrailsList';
 import TrailsMap from './TrailsMap';
 import TrailsPage from './TrailsPage';
 import TrailsSearch from './TrailsSearch';
-import TrailsFilter from './TrailsFliter';
+// import TrailsFilter from './TrailsFliter';
 
 export default class Trails extends  React.Component {
   constructor(props) {
@@ -33,13 +33,6 @@ export default class Trails extends  React.Component {
     this.searchTrails = this.searchTrails.bind(this);
     this.setStateAsync = this.setStateAsync.bind(this);
   }
-
-  // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    // if (nextState.num !== this.state.num)
-    //   return true;
-    // else if (this.state.trails !== nextState.trails)
-    //   return true;
-  // }
 
   // set state
   setStateAsync(state) {
@@ -101,8 +94,8 @@ export default class Trails extends  React.Component {
     parameters.lon = loca.lng;
     parameters.lat = loca.lat;
     this.setState({default_para: parameters});
-    console.log(parameters.lng);
-    console.log(parameters.lat);
+    // console.log(parameters.lng);
+    // console.log(parameters.lat);
 
     let url = `https://www.hikingproject.com/data/get-trails?lat=${parameters.lat}&lon=${parameters.lon}&maxDistance=${parameters.maxDistance}&maxResults=${parameters.maxResults}&sort=${parameters.sort}&minLength=${parameters.minLength}&minStars=${parameters.minStars}&key=${process.env.REACT_APP_HIKING_PROJECT_API}`;
 
@@ -112,7 +105,7 @@ export default class Trails extends  React.Component {
       res = await res.json();
       x = res;
     } catch(e) {
-      console.log("Oops, error", e);
+      // console.log("Oops, error", e);
     }
     this.setStateAsync({trails: x.trails});
   }
@@ -133,8 +126,8 @@ export default class Trails extends  React.Component {
     else
       alert('This is the last page.');
     
-    console.log(this.state.num);
-    console.log('to next call finish');
+    // console.log(this.state.num);
+    // console.log('to next call finish');
   }
 
   async componentDidMount() {
@@ -157,8 +150,8 @@ export default class Trails extends  React.Component {
   render() {
     // current page number.
     let num = this.state.num;
-    console.log(num);
-    console.log(this.state.trails);
+    // console.log(num);
+    // console.log(this.state.trails);
     // current display trails.
     let trails = [];
     let center = {lat: this.state.default_para.lat, lng: this.state.default_para.lon};
@@ -172,9 +165,8 @@ export default class Trails extends  React.Component {
       center = {lat: trails[0].latitude, lng: trails[0].longitude};
     }
 
-    // console.log(center);
-    console.log('begin render');
-    console.log(num);
+    // console.log('begin render');
+    // console.log(num);
     return (
       <div className="trails">
         <TrailsSearch searchTrails={this.searchTrails} />

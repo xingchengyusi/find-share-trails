@@ -21,8 +21,6 @@ export default class TrailsPage extends React.Component {
   }
 
   render() {
-    // console.log('in trails page');
-    // console.log(this.props.num);
     return (
       <div id='page' className='page'>
         <button className='page-change' onClick={this.previousPage}>
