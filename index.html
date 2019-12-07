@@ -3,6 +3,19 @@
   <head>
     <base target="_top">
     <style type="text/css">
+      body {
+        background-image: url('https://imgur.com/0q8Kdey.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+        margin-left: 10%;
+      }
+      div {
+        background-color: white;
+        width: 80%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
       .general_text {
         font-family: "Helvetica";
       }
@@ -55,50 +68,101 @@
       li {
         margin: 15px;
       }
-      body {
-        margin-left: 37%;
-      }
     </style>
   </head>
  
   <body>
-    <h1 class="general_text"> Oregon Trails</h1>
+    <h1 class="general_text">Trails Database</h1>
     <label class="general_text"> Search By Name: </label> <input type=text id=script_name> <button onClick=searchByName() class="op_button"> search </button>
     <br><br>
     <label class="general_text"> Search By Season: </label> <input type=text id=tag_name> <button onClick=searchByTag() class="op_button"> search </button>
     <br><br>
     <button onClick="listAllScripts()" class="op_button"> List All Reports </button> 
     <button onClick="clearAll()" class="op_button"> Clear </button>
+    <button onClick="addNew()" class="op_button"> Add a New Trail </button>
     <br>
+     <div>
     <ul id="scripts"></ul>
-    <button onClick="listAllScripts()" class="op_button"> back </button>
-    
+    <div id="add"></div>
+     </div>
+    <a class="btn" href="https://findsharetrails.netlify.com/#/" target="_blank"><button class="op_button">back to map</button></a>
   <script>
     var index = 0;
     var page_history = [""];
     
-    function listAllScripts(){
-      google.script.run.withSuccessHandler(function(response){
+    function addNew(){
       document.getElementById("scripts").innerHTML = "";
+      document.getElementById("add").innerHTML = "<br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Please enter the trail information </label> <br><br>"
+      document.getElementById("add").innerHTML += "<label class='general_text'> Name : </label> <input type=text id=t_name> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Summary : </label> <input type=text id=sum> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Difficulty : </label> <input type=text id=dif> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Stars : </label> <input type=text id=star> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> location : </label> <input type=text id=loca> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Distance :  </label> <input type=text id=dis> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Elevation : </label> <input type=text id=ele> <br><br>";
+      document.getElementById("add").innerHTML += "<label class='general_text'> Season : </label> <input type=text id=sea> <br><br>";
+      document.getElementById("add").innerHTML += "<button onClick=addOne() class='op_button'> submit </button>";
+      document.getElementById("add").innerHTML += "<br>";
+    }
+    
+    function addOne() {
+      var t_name = document.getElementById("t_name").value.toString();
+      var sum = document.getElementById("sum").value.toString();
+      var dif = document.getElementById("dif").value.toString();
+      var star = document.getElementById("star").value.toString();
+      var loca = document.getElementById("loca").value.toString();
+      var dis = document.getElementById("dis").value.toString();
+      var ele = document.getElementById("ele").value.toString();
+      var sea = document.getElementById("sea").value.toString();
+      google.script.run.withSuccessHandler(function(response){
+        document.getElementById("scripts").innerHTML = "";
+        document.getElementById("add").innerHTML = "Added";
+      }).add_One(t_name, sum, dif, star, loca, dis, ele, sea);
+    }
+    
+    function deleteOne(one) {
+      google.script.run.withSuccessHandler(function(response){
+      }).delete_One(one);
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("add").innerHTML = "";
+      document.getElementById("scripts").innerHTML = "<br>";
       for (var i=0; i<response.length; i++) {
         document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>" 
-        + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" +"</li>";
+        + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>"
+        + "<button onClick=deleteOne('" + response[i][0] + "') align='right'> delete </button>" + "</li>";
       }
-      
+      document.getElementById("scripts").innerHTML += "<br>";
       // document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
       }).listAllScripts();
-      
+    }
+    
+    function listAllScripts(){
+      google.script.run.withSuccessHandler(function(response){
+      document.getElementById("add").innerHTML = "";
+      document.getElementById("scripts").innerHTML = "<br>";
+      for (var i=0; i<response.length; i++) {
+        document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>" 
+        + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>"
+        + "<button onClick=deleteOne('" + response[i][0] + "')> delete </button>" + "</li>";
+      }
+      document.getElementById("scripts").innerHTML += "<br>";
+      // document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
+      }).listAllScripts();
     }
     
     function clearAll(){
-      document.getElementById("scripts").innerHTML = ""
+      document.getElementById("scripts").innerHTML = "";
+      document.getElementById("add").innerHTML = "";
     }
     function displayDetail(name){
       google.script.run.withSuccessHandler(function(response){
-      document.getElementById("scripts").innerHTML = "";
+      document.getElementById("scripts").innerHTML = "<br>";
+      document.getElementById("add").innerHTML = "";
       for (var i=0; i<response.length; i++) {
       document.getElementById("scripts").innerHTML += "<li class='general_text'>" + response[i] + "</li>";
       }
+      document.getElementById("scripts").innerHTML += "<br>";
       //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
       }).display_detail(name);
     }
@@ -106,15 +170,18 @@
     function searchByName() {
       var to_search = document.getElementById("script_name").value.toString();
       google.script.run.withSuccessHandler(function(response){
-      document.getElementById("scripts").innerHTML = "";
+      document.getElementById("scripts").innerHTML = "<br>";
+      document.getElementById("add").innerHTML = "";
       if (response[0] == "No script found") {
         document.getElementById("scripts").innerHTML = "No report Found";
       }
       else {
         for (var i=0; i<response.length; i++) {
           document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>"
-          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" + "</li>";
+          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>"
+          + "<button onClick=deleteOne('" + response[i][0] + "')> delete </button>" + "</li>";
         }
+        document.getElementById("scripts").innerHTML += "<br>";
         //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
       }
       }).search_by_name(to_search);
@@ -123,15 +190,18 @@
     function searchByTag() {
       var to_search = document.getElementById("tag_name").value;
       google.script.run.withSuccessHandler(function(response){
-      document.getElementById("scripts").innerHTML = "";
+      document.getElementById("scripts").innerHTML = "<br>";
+      document.getElementById("add").innerHTML = "";
       if (response[0] == "No script found") {
         document.getElementById("scripts").innerHTML = "No report Found";
       }
       else {
         for (var i=0; i<response.length; i++) {
           document.getElementById("scripts").innerHTML += "<li>" + "<button onClick=displayDetail('" + response[i][0] + "') class='li_button'>" 
-          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>" + "</li>";
+          + response[i][1] + "</button>" + "<label class='general_text'>" + " : " + response[i][2] + "</label>"
+          + "<button onClick=deleteOne('" + response[i][0] + "')> delete </button>" + "</li>";
         }
+        document.getElementById("scripts").innerHTML += "<br>";
         //document.getElementById("scripts").innerHTML += "<br> <label class='update_test'> Information last updated: " +  response[response.length-1][1]  + "</label>";
       }
       }).search_by_season(to_search);
